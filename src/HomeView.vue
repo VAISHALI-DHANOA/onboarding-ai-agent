@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'; // Import useRouter from vue-router
+import RadialMenu from '../src/components/RadialMenu.vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+
+// Create a router instance
+const router = useRouter();
+
+// Create a reactive reference for radial menu options
+const radialMenuOptions = ref([
+  { name: "Data", icon: "description" },
+  { name: "Insight", icon: "visibility" },
+  { name: "Interaction", icon: "mouse"},
+  { name: "Usage", icon: "school" }
+]);
+
+// Reactive property for the radial menu's visibility and position
+const radialMenuVisible = ref(false);
+const radialMenuPosition = ref({ x: 0, y: 0 });
+
+// Function to handle global click events
+const handleClick = (event: MouseEvent) => {
+  radialMenuVisible.value = true;
+  radialMenuPosition.value = { x: event.clientX, y: event.clientY };
+};
+
+// Function to dynamically update radial menu options
+const updateRadialMenu = () => {
+  radialMenuOptions.value = [
+    { name: "Profile", icon: "person" },
+    { name: "Messages", icon: "message" },
+  ];
+};
+
+// Function to handle the click event
+const navigateToEditor = () => {
+  router.push('/editor'); // Navigate to /editor
+};
+
+// Attach click event listener on mount
+onMounted(() => {
+  document.addEventListener('click', handleClick);
+});
+
+// Clean up the event listener on unmount
+onUnmounted(() => {
+  document.removeEventListener('click', handleClick);
+});
+
+</script>
+
+<template>
+  <main>
+        <!-- RadialMenu Component -->
+    <RadialMenu
+      v-if="radialMenuVisible"
+      :options="radialMenuOptions"
+      :x="radialMenuPosition.x"
+      :y="radialMenuPosition.y"
+    />
+   </main>
+</template>
+
+<style scoped>
+main {
+  display: flex;
+  background-color: #f0f0f0;
+}
+
+/* RadialMenu dynamic styling */
+.radial-menu {
+  position: absolute;
+  z-index: 1000;
+}
+
+</style>
+

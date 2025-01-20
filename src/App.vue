@@ -4,18 +4,24 @@
     <Filters @update-filter="updateFilter" />
     <div class="grid grid-cols-2 gap-4">
       <BarChart :data="filteredData" />
-      <!-- <DataTable :data="filteredData" /> -->
+      <LineChart :data="filteredData" />
+      <DataTable :data="filteredData" />
+    </div>
+    <div>
+      <HomeView/>
     </div>
   </div>
 </template>
 
 <script>
 import BarChart from './components/BarChart.vue';
-// import DataTable from './components/DataTable.vue';
+import LineChart from './components/LineChart.vue';
+import DataTable from './components/DataTable.vue';
 import Filters from './components/Filters.vue';
+import HomeView from './HomeView.vue';
 
 export default {
-  components: { BarChart, Filters },
+  components: { BarChart, LineChart, DataTable, Filters, HomeView },
   data() {
     return {
       data: [], // Full dataset
