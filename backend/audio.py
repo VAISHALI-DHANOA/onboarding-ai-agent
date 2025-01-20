@@ -36,7 +36,6 @@ def listen_for_command():
 
 def handle_interaction():
     
-
     #recognized_text
     recognized_text = "Can you filter the graph?"
 

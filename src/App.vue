@@ -19,6 +19,8 @@ import LineChart from './components/LineChart.vue';
 import DataTable from './components/DataTable.vue';
 import Filters from './components/Filters.vue';
 import HomeView from './HomeView.vue';
+import axios from 'axios';
+import { requestAnimFrame } from 'chart.js/helpers';
 
 export default {
   components: { BarChart, LineChart, DataTable, Filters, HomeView },
@@ -45,7 +47,20 @@ export default {
       { category: 'B', value: 50 },
       { category: 'C', value: 70 },
     ];
-    this.filteredData = this.data;
+        this.filteredData = this.data;
+    // Make a request for a user with a given ID
+    axios.get('/handle_interaction')
+      .then(function (response) {
+        // handle success
+        console.log(response);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
   },
 };
 </script>
