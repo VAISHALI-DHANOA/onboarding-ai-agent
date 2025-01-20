@@ -4,9 +4,25 @@ from fastapi import FastAPI
 import speech_recognition as sr
 from IPython.display import display, Markdown
 from openai import OpenAI
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 app = FastAPI()
 
+origins = [
+    "http://localhost",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["X-Custom-Header"],
+)
 
 @app.get("/")
 def read_root():
@@ -50,11 +66,12 @@ def listen_for_command():
 # while True:
 #     listen_for_command()
 
-@app.get("/handle_interaction")
-def handle_interaction():
+@app.get("/handle_interaction/{prompt}")
+def handle_interaction(prompt:str):
     
     #recognized_text
-    recognized_text = "Can you filter the graph?"
+    # recognized_text = "Can you filter the graph?"
+    recognized_text = prompt
 
     # Prompt for OpenAI API
     prompt = f"Classify the following text into one of these categories: 'explain visualization,' 'explain interaction,' 'explain insight,' or 'insight usage.'\n\nText: {recognized_text}\n\nCategory:"
@@ -72,8 +89,9 @@ def handle_interaction():
     ]
 )
         category = response.choices[0].message.content.strip()
-
         print(f"Predicted category: {category}")
+        return category
+
 
     except Exception as e:
         return f"Error: {str(e)}"

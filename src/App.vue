@@ -1,6 +1,6 @@
 <template>
-<div style="width: 90%; margin: auto; padding: 20px;">
-  <h1 class="text-2xl font-bold mb-4">Interactive Dashboard</h1>
+  <div style="width: 90%; margin: auto; padding: 20px">
+    <h1 class="text-2xl font-bold mb-4">Interactive Dashboard</h1>
     <Filters @update-filter="updateFilter" />
     <div class="grid grid-cols-2 gap-4">
       <BarChart :data="filteredData" />
@@ -8,19 +8,18 @@
       <DataTable :data="filteredData" />
     </div>
     <div>
-      <HomeView/>
+      <HomeView />
     </div>
   </div>
 </template>
-
 <script>
-import BarChart from './components/BarChart.vue';
-import LineChart from './components/LineChart.vue';
-import DataTable from './components/DataTable.vue';
-import Filters from './components/Filters.vue';
-import HomeView from './HomeView.vue';
-import axios from 'axios';
-import { requestAnimFrame } from 'chart.js/helpers';
+import BarChart from './components/BarChart.vue'
+import LineChart from './components/LineChart.vue'
+import DataTable from './components/DataTable.vue'
+import Filters from './components/Filters.vue'
+import HomeView from './HomeView.vue'
+import axios from 'axios'
+import { requestAnimFrame } from 'chart.js/helpers'
 
 export default {
   components: { BarChart, LineChart, DataTable, Filters, HomeView },
@@ -29,38 +28,33 @@ export default {
       data: [], // Full dataset
       filteredData: [], // Filtered dataset
       filter: null, // Filter criteria
-    };
+    }
   },
   methods: {
     updateFilter(criteria) {
-      this.filter = criteria;
-      this.filteredData = this.data.filter((item) =>
-        // Update this filter logic based on your data
-        item.category === criteria
-      );
+      this.filter = criteria
+      this.filteredData = this.data.filter(
+        (item) =>
+          // Update this filter logic based on your data
+          item.category === criteria,
+      )
     },
   },
-  mounted() {
+  async mounted() {
     // Fetch or initialize data
     this.data = [
       { category: 'A', value: 30 },
       { category: 'B', value: 50 },
       { category: 'C', value: 70 },
-    ];
-        this.filteredData = this.data;
+    ]
+    this.filteredData = this.data
     // Make a request for a user with a given ID
-    axios.get('/handle_interaction')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
+    const prompt = 'Can you filter the graph?'
+    const myresponse = await fetch('http://127.0.0.1:8000/handle_interaction/' + prompt + '}', {
+      method: 'GET',
+    })
+    const data = await myresponse.json()
+    console.log('Success', data)
   },
-};
+}
 </script>
