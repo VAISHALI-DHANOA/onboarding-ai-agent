@@ -75,7 +75,7 @@ def handle_interaction(prompt:str):
 
     # Prompt for OpenAI API
     prompt = f"Classify the following text into one of these categories: 'explain visualization,' 'explain interaction,' 'explain insight,' or 'insight usage.'\n\nText: {recognized_text}\n\nCategory:"
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key="")
     # OpenAI API Call
     try:
         response = client.chat.completions.create(
