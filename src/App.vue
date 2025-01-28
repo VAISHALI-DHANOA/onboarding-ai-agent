@@ -5,6 +5,9 @@
     <div class="grid grid-cols-2 gap-4">
       <BarChart :data="filteredData" />
       <LineChart :data="filteredData" />
+      <!-- <div v-if="!excelFile">Loading Excel File...</div>
+      <ExcelFile v-else :excelFile="excelFile" :filteredCategories="['Red', 'Blue']" /> -->
+      <!-- <ExcelFile :excelFile="excelFile" :filteredCategories="['Red', 'Blue']" /> -->
       <DataTable :data="filteredData" />
     </div>
     <div>
@@ -18,16 +21,27 @@ import LineChart from './components/LineChart.vue'
 import DataTable from './components/DataTable.vue'
 import Filters from './components/Filters.vue'
 import HomeView from './HomeView.vue'
-import axios from 'axios'
-import { requestAnimFrame } from 'chart.js/helpers'
+import ExcelFile from './components/ExcelFile.vue'
+import FinanceData from './assets/FinanceData.xlsx'
 
 export default {
-  components: { BarChart, LineChart, DataTable, Filters, HomeView },
+  components: { BarChart, DataTable, Filters, LineChart, HomeView },
   data() {
     return {
       data: [], // Full dataset
       filteredData: [], // Filtered dataset
       filter: null, // Filter criteria
+      excelFile: null,
+    }
+  },
+  async created() {
+    try {
+      const response = await fetch(FinanceData) // Fetch the file as a static asset
+      const blob = await response.blob()
+      this.excelFile = new File([blob], 'FinanceData.xlsx')
+      console.log('Found the file', this.excelFile)
+    } catch (error) {
+      console.error('Error loading Excel file:', error)
     }
   },
   methods: {
