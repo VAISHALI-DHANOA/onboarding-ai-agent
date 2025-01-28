@@ -10,22 +10,6 @@
       rel="stylesheet"
     />
   </head>
-  <!-- <div class="menu" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
-    <a v-for="(option, index) in options" :key="index" href="">
-      <div class="sector" :style="sectorStyles[index]"></div>
-      <div class="option" :style="optionStyles[index]">
-        <span class="material-icons-round">{{ option.icon }}</span>
-        <div class="name">{{ option.name }}</div>
-        <div class="submenu" :style="optionStyles[index].submenuClass>
-          <a v-for="(subOption, subIndex) in option.submenu" :key="subIndex" href="">
-            {{ subOption }}
-          </a>
-        </div>
-      </div>
-    </a>
-  </div>
-</template> -->
-
   <div class="menu" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
     <a v-for="(option, index) in options" :key="index" href="">
       <div class="sector" :style="sectorStyles[index]"></div>
@@ -38,9 +22,9 @@
           class="submenu"
           :class="optionStyles[index].submenuClass"
         >
-          <a v-for="(subOption, subIndex) in option.submenu" :key="subIndex" href="">
+          <li v-for="(subOption, subIndex) in option.submenu" :key="subIndex" href="">
             {{ subOption }}
-          </a>
+          </li>
         </div>
       </div>
     </a>
