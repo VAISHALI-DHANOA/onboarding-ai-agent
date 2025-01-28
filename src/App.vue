@@ -9,6 +9,10 @@
       <ExcelFile v-else :excelFile="excelFile" :filteredCategories="['Red', 'Blue']" /> -->
       <!-- <ExcelFile :excelFile="excelFile" :filteredCategories="['Red', 'Blue']" /> -->
       <DataTable :data="filteredData" />
+      <HomeView
+        :selectedOption="selectedOption"
+        @update-selected-option="updateSelectedOption"
+      ></HomeView>
     </div>
     <div>
       <HomeView />
@@ -32,6 +36,11 @@ export default {
       filteredData: [], // Filtered dataset
       filter: null, // Filter criteria
       excelFile: null,
+      selectedOption: {
+        name: 'Data',
+        icon: 'description',
+        submenu: ['Submenu 1', 'Submenu 2', 'Submenu 3'],
+      },
     }
   },
   async created() {
@@ -52,6 +61,14 @@ export default {
           // Update this filter logic based on your data
           item.category === criteria,
       )
+    },
+    updateSelectedOption(option) {
+      this.selectedOption = {
+        name: 'Data',
+        icon: 'description',
+        submenu: ['Submenu 1', 'Submenu 2', 'Submenu 3'],
+      }
+      // this.selectedOption = option; // Update the selected option
     },
   },
   async mounted() {

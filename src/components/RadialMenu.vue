@@ -11,7 +11,12 @@
     />
   </head>
   <div class="menu" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
-    <a v-for="(option, index) in options" :key="index" href="">
+    <a
+      v-for="(option, index) in options"
+      :key="index"
+      :class="['menu-option', { highlighted: option.name == selectedOption.name }]"
+      href=""
+    >
       <div class="sector" :style="sectorStyles[index]"></div>
       <div class="option" :style="optionStyles[index]">
         <span class="material-icons-round">{{ option.icon }}</span>
@@ -39,6 +44,10 @@ export default defineComponent({
   props: {
     options: {
       type: Array as () => { name: string; icon: string; submenu: string[] }[],
+      required: true,
+    },
+    selectedOption: {
+      type: Object as () => { name: string; icon: string; submenu: string[] },
       required: true,
     },
     x: {
@@ -148,6 +157,10 @@ export default defineComponent({
 .menu a:hover .option {
   color: black;
 }
+.menu-option.highlighted {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
 .menu::before {
   position: absolute;
   content: 'menu';
@@ -170,7 +183,7 @@ export default defineComponent({
   top: 100%;
   left: 50%;
   transform: translateX(-50%); /* Center vertically */
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(225, 99, 207, 0.8);
   padding: 10px;
   border-radius: 5px;
   display: none;
@@ -182,7 +195,7 @@ export default defineComponent({
 }
 
 .submenu a {
-  color: rgb(94, 8, 206);
+  color: rgb(255, 255, 255);
   text-decoration: none;
   font-size: 12px;
   padding: 8px 12px;

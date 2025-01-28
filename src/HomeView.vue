@@ -3,7 +3,12 @@ import { useRouter } from 'vue-router' // Import useRouter from vue-router
 import RadialMenu from '../src/components/RadialMenu.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// Create a router instance
+const props = defineProps({
+  selectedOption: {
+    type: Object as () => { name: string; icon: string; submenu: string[] },
+    required: true,
+  },
+}) // Create a router instance
 const router = useRouter()
 
 // Create a reactive reference for radial menu options
@@ -27,8 +32,8 @@ const handleClick = (event: MouseEvent) => {
 // Function to dynamically update radial menu options
 const updateRadialMenu = () => {
   radialMenuOptions.value = [
-    { name: 'Profile', icon: 'person' },
-    { name: 'Messages', icon: 'message' },
+    { name: 'Profile', icon: 'person', submenu: ['Submenu 1', 'Submenu 2', 'Submenu 3'] },
+    { name: 'Messages', icon: 'message', submenu: ['Submenu 1', 'Submenu 2', 'Submenu 3'] },
   ]
 }
 
@@ -54,6 +59,7 @@ onUnmounted(() => {
     <RadialMenu
       v-if="radialMenuVisible"
       :options="radialMenuOptions"
+      :selectedOption="selectedOption"
       :x="radialMenuPosition.x"
       :y="radialMenuPosition.y"
     />
