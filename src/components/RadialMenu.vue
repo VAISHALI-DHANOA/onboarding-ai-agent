@@ -10,12 +10,38 @@
       rel="stylesheet"
     />
   </head>
+  <!-- <div class="menu" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
+    <a v-for="(option, index) in options" :key="index" href="">
+      <div class="sector" :style="sectorStyles[index]"></div>
+      <div class="option" :style="optionStyles[index]">
+        <span class="material-icons-round">{{ option.icon }}</span>
+        <div class="name">{{ option.name }}</div>
+        <div class="submenu" :style="optionStyles[index].submenuClass>
+          <a v-for="(subOption, subIndex) in option.submenu" :key="subIndex" href="">
+            {{ subOption }}
+          </a>
+        </div>
+      </div>
+    </a>
+  </div>
+</template> -->
+
   <div class="menu" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
     <a v-for="(option, index) in options" :key="index" href="">
       <div class="sector" :style="sectorStyles[index]"></div>
       <div class="option" :style="optionStyles[index]">
         <span class="material-icons-round">{{ option.icon }}</span>
         <div class="name">{{ option.name }}</div>
+        <!-- Submenu -->
+        <div
+          v-if="option.submenu && option.submenu.length"
+          class="submenu"
+          :class="optionStyles[index].submenuClass"
+        >
+          <a v-for="(subOption, subIndex) in option.submenu" :key="subIndex" href="">
+            {{ subOption }}
+          </a>
+        </div>
       </div>
     </a>
   </div>
@@ -28,7 +54,7 @@ export default defineComponent({
   name: 'RadialMenu',
   props: {
     options: {
-      type: Array as () => { name: string; icon: string }[],
+      type: Array as () => { name: string; icon: string; submenu: string[] }[],
       required: true,
     },
     x: {
@@ -65,8 +91,11 @@ export default defineComponent({
       props.options.map((_, index) => {
         const angle = (360 / totalSectors.value) * (index + 1) - deviation.value
         const optionAngle = angle + Math.abs(skewVal.value) + (90 - Math.abs(skewVal.value)) / 2
+        const submenuPosition = angle > 180 ? 'left' : 'right'
+
         return {
           transform: `rotateZ(${optionAngle}deg) translateY(-100px) rotate(-${optionAngle}deg)`,
+          submenuClass: submenuPosition,
         }
       }),
     )
@@ -154,30 +183,43 @@ export default defineComponent({
 }
 .submenu {
   position: absolute;
-  top: 50%;
-  left: 150%; /* Offset the submenu to appear to the side */
-  transform: translate(-50%, -50%);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%); /* Center vertically */
   background: rgba(0, 0, 0, 0.8);
   padding: 10px;
   border-radius: 5px;
   display: none;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px; /* Added gap between submenu items */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.6); /* Optional: add shadow for better visibility */
+  min-width: 120px; /* Minimum width to avoid very narrow submenus */
+  z-index: 1000; /* Ensure it's on top of other elements */
 }
 
 .submenu a {
-  color: white;
+  color: rgb(94, 8, 206);
   text-decoration: none;
   font-size: 12px;
-  padding: 5px 10px;
+  padding: 8px 12px;
   border-radius: 3px;
   transition: background 0.2s;
 }
 
 .submenu a:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(85, 187, 22, 0.2);
 }
 
+/* Position the submenu to the right or left */
+.right .submenu {
+  left: 100%;
+  top: 50%; /* Center vertically */
+}
+
+.left .submenu {
+  right: 100%;
+  top: 50%; /* Center vertically */
+}
 .option:hover .submenu {
   display: flex;
 }
